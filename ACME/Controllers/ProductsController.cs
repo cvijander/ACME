@@ -36,6 +36,7 @@ namespace ACME.Controllers
         }
 
         // GET: Products/Create
+        [HttpGet]
         public ActionResult Create()
         {
             return View();
@@ -46,8 +47,9 @@ namespace ACME.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ProductId,Name,Price")] Product product)
+        public ActionResult Create([Bind(Include = "ProductId,Name,Price")]Product product)
         {
+            
             if (ModelState.IsValid)
             {
                 product.ProductId = Guid.NewGuid();
@@ -55,7 +57,21 @@ namespace ACME.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            
+            /*
+            var product = new Product();
+            product.ProductId = Guid.NewGuid();
+            product.Name = Request["Name"];
+            product.Price = Decimal.Parse(Request["Price"]);
+            */
+            /*
+            var product = new Product();
+            product.ProductId = Guid.NewGuid();
+            product.Name = Name;
+            product.Price = Price;
 
+            // Save these into the database 
+            */
             return View(product);
         }
 
@@ -71,6 +87,9 @@ namespace ACME.Controllers
             {
                 return HttpNotFound();
             }
+
+            var myValue = Request.QueryString["somesuch"];
+            var myOtherValue = Request["somesuch"];
             return View(product);
         }
 
